@@ -5,13 +5,13 @@
  */
 package ues.occ.edu.sv.ingenieria.prn335.client.boundary;
 
-import java.awt.event.ActionEvent;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -21,11 +21,13 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
+import ues.occ.edu.sv.ingenieria.prn335.cineData.entity.Descuento;
 import ues.occ.edu.sv.ingenieria.prn335.cineData.entity.TipoDescuento;
 import ues.occ.edu.sv.ingenieria.prn335.client.client.AbstractClient;
 import ues.occ.edu.sv.ingenieria.prn335.client.client.TipoDescuentoClient;
@@ -81,17 +83,8 @@ public class tipoDescuentoBean extends BackingBean<TipoDescuento> implements Ser
         }
         return null;
     }
-    
-    
-    
+
     public void guardar() {
-     System.out.println(".........................................................");
-//        super.crear(tipo);
-        
-        
-        
-       // sucCli.create(tipo);
-       
        FacesContext context = FacesContext.getCurrentInstance();
         Response respuesta = raiz.path("/tipodescuento").request().post(Entity.json(tipo));
         if (respuesta.getStatus() == 201) {
@@ -103,27 +96,28 @@ public class tipoDescuentoBean extends BackingBean<TipoDescuento> implements Ser
         
     }
     
-//    public TipoDescuento creador(){
-//        System.out.println(".....................................REGISTRO:  "+tipo);
-//        
-//        Client client=ClientBuilder.newClient();
-//        
-//        if (tipo!=null) {
-//            try {
-//                if (client!=null) {
-//                    WebTarget target =client.target("http://localhost:8080/Server/webresources/tipodescuento");
-//                    TipoDescuento salida = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(tipo, MediaType.APPLICATION_JSON), TipoDescuento.class);
-//                    if (salida!=null) {
-//                        System.out.println("..........................."+salida);
-//                        return salida;
-//                    }
-//                }
-//        } catch (Exception e) {
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
-//        }
-//        }
-//        return null;
-  //  }
+    /**
+     * Metodo que devuelve una lista de registro Descuento, deacuerdo al id de un TipoDescuento,
+     * esto atravez del metodo GET.
+     * De no encontrarse ningun Descuento relacionado al Id de TipoDescuento este devolvera una lista nula
+     * @param id
+     * @return 
+     */
+    public List<Descuento> descuentosPorTipoDescuentos(Integer id) {
+        List salida = null;
+        try {
+                WebTarget target = cliente.target(url+"tipodescuento").path("{id}/descuentos").resolveTemplate("id", id);
+                salida = target.request(MediaType.APPLICATION_JSON).get(new GenericType<List<Descuento>>() {
+            });
+                } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+        } finally {
+            if (salida == null) {
+                salida = new ArrayList();
+            }
+        }
+        return salida;
+    }
 
     public void seleccionarRegistro(SelectEvent event) {
         selec = (TipoDescuento) event.getObject();

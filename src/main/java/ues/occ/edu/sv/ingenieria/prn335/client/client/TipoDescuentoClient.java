@@ -5,10 +5,7 @@
  */
 package ues.occ.edu.sv.ingenieria.prn335.client.client;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
 import ues.occ.edu.sv.ingenieria.prn335.cineData.entity.TipoDescuento;
 
 /**
@@ -18,6 +15,9 @@ import ues.occ.edu.sv.ingenieria.prn335.cineData.entity.TipoDescuento;
 @Stateless
 public class TipoDescuentoClient extends AbstractClient<TipoDescuento>{
     
+    /**
+     * pasamos el path de la clase en el servidor al ClienteAbstracto
+     */
     public TipoDescuentoClient() {
         this.entidad="tipodescuento"; 
     }
