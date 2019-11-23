@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form id="frm">
+            <p:dataTable id="table" value="#{BeanTipoDescuento.lazy}" var="tip" paginator="true" rows="5"
+                         lazy="true" selectionMode="single" selection="#{BeanTipoDescuento.selec}" rowKey="#{tip.idTipoDescuento}">
+                
+                <p:ajax process="#{tip}" event="rowSelect" listener="#{BeanTipoDescuento.seleccionarRegistro}" update=":frm:table"/>
+                <p:ajax process="#{tip}" event="rowUnselect" listener="#{BeanTipoDescuento.desceleccionarRegistro}" update=":frm"/>
+
+                <p:column headerText="Id Tipo Descuento">
+                    <h:outputLabel value="#{tip.idTipoDescuento}"/>
+                </p:column>
+                <p:column headerText="Tipo">
+                    <h:outputLabel value="#{tip.tipo}"/>
+                </p:column>
+                <p:column headerText="Descripcion">
+                    <h:outputLabel value="#{tip.descripcion}"/>
+                </p:column>
+                <p:column headerText="Aplicable Boleto">
+                    <h:outputLabel value="#{tip.aplicableBoleto}"/>
+                </p:column>
+                <p:column headerText="Aplicable Consumible">
+                    <h:outputLabel value="#{tip.aplicableConsumible}"/>
+                </p:column>
+                <p:column headerText="Porcentaje Sugerido">
+                    <h:outputLabel value="#{tip.porcentajeSugerido}"/>
+                </p:column>
+                <p:column headerText="Activo">
+                    <h:outputLabel value="#{tip.activo}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <h:form id="agg">
+            
+            <h:panelGrid id="panDatos" columns="2" cellpadding="3" cellspacing="2" >
+
+                        <p:outputLabel value="Id:"/>
+                        <p:inputText id="idSucursal" value="#{BeanTipoDescuento.tipo.idTipoDescuento}" title="Id TipoDescuento" rendered="true" size="23"/>
+                        <p:outputLabel value="Tipo:"/>
+                        <p:inputText id="tipo" value="#{BeanTipoDescuento.tipo.tipo}" title="Tipo" size="23" rendered="true"/>
+                        <p:outputLabel value="Descripcion:"/>
+                        <p:inputText id="Descripcion" value="#{BeanTipoDescuento.tipo.descripcion}" size="23" title="Descripcion" rendered="true"/>
+                        <p:outputLabel value="Apica Boleto:"/>
+                        <p:selectBooleanCheckbox id="AplicaBoleto" value="#{BeanTipoDescuento.tipo.aplicableBoleto}" rendered="true" required="true"/>
+                        <p:outputLabel value="Aplica Consumible:"/>
+                        <p:selectBooleanCheckbox id="AplicaConsumible" value="#{BeanTipoDescuento.tipo.aplicableConsumible}" rendered="true" required="true"/>
+                        <p:outputLabel value="Porcentaje Sugerido"/>
+                        <p:inputText id="PorcentajeSugerido" value="#{BeanTipoDescuento.tipo.porcentajeSugerido}" size="23" rendered="true"/>
+                        <p:outputLabel value="Activo"/>
+                        <p:selectBooleanCheckbox id="Activo" value="#{BeanTipoDescuento.tipo.activo}" rendered="true" required="true"/>
+                    </h:panelGrid>
+            
+            <p:commandButton value="GUARDAR" icon="ui-icon-disk" actionListener="#{BeanTipoDescuento.guardar}" update="agg:panDatos frm:table" ajax="true"/>
+        </h:form>
+    </h:body>
+</html>
+
