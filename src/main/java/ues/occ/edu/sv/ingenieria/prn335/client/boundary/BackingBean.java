@@ -17,6 +17,7 @@ import ues.occ.edu.sv.ingenieria.prn335.client.client.AbstractClient;
 /**
  *
  * @author christian
+ *
  */
 public abstract class BackingBean<T> {
 
